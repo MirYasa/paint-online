@@ -3,6 +3,7 @@ import Toolbar from "./components/Toolbar"
 import Canvas from "./components/Canvas"
 import {fromEvent, map, pairwise, switchMap, takeUntil} from "rxjs"
 import {useAppSelector} from "./store/hook"
+import Settingsbar from "./components/Settingsbar"
 
 function App() {
     const canvasRef = useRef(null)
@@ -56,6 +57,7 @@ function App() {
     return (
         <div className={'w-full max-w-7xl ml-auto mr-auto'}>
             <Toolbar/>
+            {/*<Settingsbar/>*/}
             <Canvas
                 width={1280}
                 height={640}

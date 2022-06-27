@@ -7,7 +7,7 @@ export interface ToolState {
 }
 
 const initialState: ToolState = {
-    type: '',
+    type: 'brush',
     color: '#000000'
 }
 
@@ -16,5 +16,9 @@ export default createReducer(initialState, builder =>
         .addCase(updateColor, (state, action) => {
             const {color} = action.payload
             state.color = color
+        })
+        .addCase(updateTool, (state, action) => {
+            const {type} = action.payload
+            state.type = type
         })
 )
