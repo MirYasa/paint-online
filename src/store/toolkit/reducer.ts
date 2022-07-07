@@ -1,8 +1,8 @@
 import {createReducer} from "@reduxjs/toolkit"
-import {updateColor, updateTool} from "./action"
+import {Tools, updateColor, updateTool} from "./action"
 
 export interface ToolState {
-    type: string
+    type: Tools
     color: string
 }
 
