@@ -25,6 +25,7 @@ function App() {
         if (!context) return
 
         context.strokeStyle = color
+        context.fillStyle = color
     }, [color])
 
     return (

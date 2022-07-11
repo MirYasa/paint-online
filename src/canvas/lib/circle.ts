@@ -1,5 +1,15 @@
 import {fromEvent, map, switchMap, takeUntil} from "rxjs"
 
+interface ICircleData {
+    prev: ICoordinate[]
+    cur: ICoordinate[]
+}
+
+interface ICoordinate {
+    x: number
+    y: number
+}
+
 export function circle(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
     const mouseMove = fromEvent(canvas, 'mousemove')
     const mouseDown = fromEvent(canvas, 'mousedown')
@@ -10,8 +20,8 @@ export function circle(canvas: HTMLCanvasElement, context: CanvasRenderingContex
         .pipe(
             switchMap(
                 () => {
-                    let res: any[] = []
-                    let prev = []
+                    let res: ICoordinate[] = []
+                    let prev: ICoordinate[] = []
                     let isStart = false
                     return mouseMove
                         .pipe(
@@ -36,10 +46,24 @@ export function circle(canvas: HTMLCanvasElement, context: CanvasRenderingContex
                 }
             )
         )
-    return stream.subscribe((res: any) => {
-        context.clearRect(0, 0, canvas.width, canvas.height)
-        context?.beginPath()
-        context?.arc(res.cur[0].x, res.cur[0].y, Math.abs(res.cur[1].x - res.cur[0].x), 0, 2 * Math.PI)
-        context?.stroke()
+    // @ts-ignore
+    return stream.subscribe((res: ICircleData) => {
+        const circleX = res.cur[0].x
+        const circleY = res.cur[0].y
+        const circleRadius = Math.abs(res.cur[1]?.x - circleX)
+        const circleRadius2 = Math.abs(res.cur[1]?.y - circleY)
+        const saved = canvas.toDataURL()
+
+
+        const img = new Image()
+        img.src = saved
+        img.onload = () => {
+            context.clearRect(0, 0, canvas.width, canvas.height)
+            context.drawImage(img, 0, 0, canvas.width, canvas.height)
+            context?.beginPath()
+            context?.rect(circleX, circleY, circleRadius, circleRadius2)
+            context?.stroke()
+            context.fill()
+        }
     })
 }
